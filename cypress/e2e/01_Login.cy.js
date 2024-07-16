@@ -14,28 +14,11 @@ describe('Login and Create a Client', () => {
         loginPage.enterEmail()
         loginPage.enterPassword()
         loginPage.clickLoginButton()
+        cy.wait(4000) 
         cy.get('h2').should('have.text', 'Matias Diego test')
-        /* homePage.clickNewClient()
-        homePage.addSsn(Math.floor(Math.random() * 1000000000))    
-        homePage.clickNext()
-        createClientForm.enterFirstName()
-        createClientForm.enterLastName()
-        createClientForm.enterDob()
-        createClientForm.enterZipCode()
-        createClientForm.enterAddress1()
-        createClientForm.enterAddress2()
-        createClientForm.enterPhone()
-        createClientForm.selectTaxPrepper()
-        createClientForm.enterRefReceipt()
-        createClientForm.enterEmail()
-        createClientForm.selectLanguage('english')
-        createClientForm.clickCreate()
-        createClientForm.clickConfirm() */
-
-
-
-
-        
+        cy.get("[class='flex grow items-center gap-2'] .text-xx-s").should('have.text', "matias.diego@rgbrenner.com")
+        cy.get("[class='grow-1 flex'] [type]").should('be.visible').should('have.text', "Create new client")
+   
     });
     
 });
