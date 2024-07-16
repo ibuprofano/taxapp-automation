@@ -1,56 +1,91 @@
 /// <reference types="Cypress" />
 require('cypress-plugin-tab')
+const fs = require('fs')
 
 class CreateClientForm{
+
+
+ 
     getElementByIdAndType(id, value){
         let idHash = (`#${id}`).toString()
         cy.log(idHash)
         cy.get(idHash).type(value)
     }
+
+    addSsn(number){
+        let ssnValue = Math.random() * 1000000000
+        cy.get('#ssn').type(ssnValue)
+        //cy.log(ssnValue)
+        return ssnValue
+    }
+    
+
+    clickNext(){
+        cy.contains('Next').click()
+    }
+
+
     enterFirstName(){
-        cy.get('#firstName').type('Gonza')
-        //this.getElementById(id, value).type('Gonza')
+        let firstNamevalue = 'Gonza'
+        cy.get('#firstName').type(firstNamevalue)
+        return firstNamevalue
     }
     enterLastName(){
-        cy.get('#lastName').type('Kpo')
+        var lastNameValue = Math.random()*(999-100+1)+100
+        cy.get('#lastName').type(lastNameValue)
+        return lastNameValue
     }
     enterDob(){
-        cy.get('[name="dateOfBirth"]').clear().type("01/01/1900")
+        let dobValue = "01/01/1900"
+        cy.get('[name="dateOfBirth"]').clear().type(dobValue)
+        return dobValue
     }
     enterZipCode(){
-        cy.get('#zipCode').click({force:true}).type(Math.floor(Math.random()*90000) + 10000)
+        let zipCodeValue = Math.floor(Math.random()*90000) + 10000
+        cy.get('#zipCode').click({force:true}).type(zipCodeValue)
+        return zipCodeValue
     }
     enterAddress1(){
-        cy.get('#address1').type("Street Name "+ Math.floor(Math.random()*90000) + 10000 )
+        let address1Value = "Street Name "+ Math.floor(Math.random()*90000) + 10000
+        cy.get('#address1').type(address1Value)
+        return address1Value
     }
     enterAddress2(){
-        cy.get('#address2').type("Street Name "+ Math.floor(Math.random()*90000) + 10000 )
+        let address2Value = "Street Name "+ Math.floor(Math.random()*90000) + 10000
+        cy.get('#address2').type(address2Value)
+        return address2Value
     }
     enterPhone(){
-        cy.get('#phoneNumber').type('12345678901')
+        let phoneValue = Math.floor(Math.random() * 1000000000)
+        cy.get('#phoneNumber').type(phoneValue)
+        return phoneValue
     }
     selectTaxPrepper(){
         cy.contains('Choose a tax preparer').click({force:true}).type('{downArrow}{downArrow}{enter}') 
     }
 
     enterRefReceipt(){
-        cy.get('#referrersReceiptNumber').type('1234')
+        let refReceipValue = Math.floor(Math.random() * 1000)
+        cy.get('#referrersReceiptNumber').type('refReceipValue')
+        return refReceipValue
     }
-    enterEmail(){
-        let number = Math.floor(Math.random()*(999-100+1)+100)
-        cy.get('#email').type(`gonzalo.roland+${number}@rootstrap.com`)
+    enterEmail(lastNameValue){
+        let emailValue = 'gonzalo.roland+'+ lastNameValue +'@rootstrap.com'
+        cy.get('#email').type(emailValue)
+        return emailValue
     }
 
-    selectLanguage(lang){
+    selectLanguage(langValue){
         let sequence = ''
-        switch(lang){
+        switch(langValue){
             case 'english':
                 sequence = '{downArrow}{enter}'
                 break
             case 'spanish':
                 sequence = '{downArrow}{downArrow}{enter}'
                 }
-        cy.contains('Select...').click({force:true}).type(sequence)
+        cy.contains('Choose a language').click({force:true}).type(sequence)
+        return langValue
         
     }
 
@@ -60,6 +95,27 @@ class CreateClientForm{
 
     clickConfirm(){
         cy.get('.gap-4 > .bg-primary-500').click()
+    }
+
+    saveUserData(ssnValue, firstNameValue, lastNameValue, dobValue, zipCodeValue, address1Value, address2Value, phoneValue, refReceiptValue, emailValue, langValue) {
+        let userData = {
+            firstName : firstNameValue,
+            lastName : lastNameValue,
+            dob : dobValue,
+            zipCode : zipCodeValue,
+            address1: address1Value,
+            address2: address2Value,
+            phone: phoneValue,
+            refReceipt : refReceiptValue,
+            email: emailValue,
+            language : langValue,
+            SSN: ssnValue
+
+        }
+        cy.log(userData)
+        cy.writeFile('/fixtures/created-user-data.json', userData)
+        //fs.writeFile('/fixtures/createdUsers', userDatajson )
+        //cy.log(userDatajson)
     }
 
 } 
