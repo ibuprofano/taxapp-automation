@@ -43,8 +43,8 @@ describe('Login and Create a Client', () => {
             refReceipt : refReceipt,
             email: email,
             language : language,
-            SSN: ssn
-            
+            SSN: ssn,
+            taxPrepper : taxPrepper
         }
         cy.log(userData)
         cy.writeFile('./cypress/fixtures/created-user-data.json', userData)

@@ -17,8 +17,12 @@ class ClientDetails{
     
    }
    
-   addNote(){
-    cy.get('#comment').type('This is an automated test note.')
+   addNote(comment){
+    cy.get('#comment').type(comment)
+   }
+
+   sendNote(){
+      cy.get("[class='mt-4 flex gap-4'] [type='submit']:nth-of-type(2)").click()
    }
    
    uploadFile(){
@@ -55,12 +59,16 @@ class ClientDetails{
     cy.contains('Add a comment').click()
    }
 
+   openCommentModal2(){
+      cy.contains('Add Comment').click()
+     }
+
    openComments(){
     cy.get("[class='flex w-1\/3 flex-col items-start gap-4'] [class] [type='submit']:nth-of-type(2)").click()
    }
 
-   submitMessage(){
-    cy.get('#messageInput').type('This is a test chat message {enter}')
+   submitMessage(message){
+    cy.get('#messageInput').type(message +'{enter}')
     
    }
   
