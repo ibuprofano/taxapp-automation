@@ -66,19 +66,8 @@ describe('Login and Create a Client', () => {
         homePage.enterSearchTerm(userData.email)
         cy.wait(4000)
         homePage.selectClient()
-        cy.get('.flex.flex-col.gap-2.items-start > .font-medium.text-lg').should('have.text', userData.firstName +' '+ userData.lastName)
-        cy.log(userData.SSN)
-        cy.get('.flex.flex-col.gap-2.items-start > div:nth-of-type(3)').should('have.text', 'SSN '+ userData.SSN.toString().slice(0, 3) + '-' + userData.SSN.toString().slice(3, 5) + '-' + userData.SSN.toString().slice(5))
-        cy.get('.flex.flex-col.gap-2.items-start > div:nth-of-type(4)').should('have.text', userData.email)
-        //cy.get('div:nth-of-type(1) > .text-blue-gray-sm').should('have.text','Garolfaa, Alaska, US')
-        cy.get('div:nth-of-type(2) > .text-blue-gray-sm').should('have.text', userData.address1)
-        cy.get('div:nth-of-type(4) > .text-blue-gray-sm').should('have.text', userData.zipCode)
-        cy.get('div:nth-of-type(3) > .text-blue-gray-sm').should('have.text', userData.address2)
-        cy.get('div:nth-of-type(5) > .text-blue-gray-sm').should('have.text', userData.dob)
-        cy.get('div:nth-of-type(6) > .text-blue-gray-sm').should('have.text', userData.phone)
-        cy.get('div:nth-of-type(7) > .text-blue-gray-sm').should('have.text', userData.taxPrepper)
-        cy.get('div:nth-of-type(8) > .text-blue-gray-sm').should('have.text', userData.language.charAt(0).toUpperCase() + userData.language.slice(1))
-
+        homePage.assertNewClientData(userData)
+       
         ///////////////////////////////////////// Add and check comments 
         let commentValue1 = 'This is an automated comment test.' //This can be edited, will try to randomize in the 
         let commentValue2 = 'This is ANOTHER an automated comment test.'
@@ -89,13 +78,13 @@ describe('Login and Create a Client', () => {
         //clientDetails.openComments()
         cy.wait(4000)
         clientDetails.openComments()
-        cy.get('.border-l.border-l-4.border-l-primary-500.border-t.cursor-pointer.flex.flex-col.gap-2.justify-between.p-4.w-full > .h-8.max-w-prose.text-start.text-xs.truncate.whitespace-pre').should('have.text', commentValue1)
-        cy.get("[class='whitespace-pre text-sm text-blueGray-700']").should('have.text', commentValue1)
+        clientDetails.assertComment(commentValue1)
+        
         clientDetails.openCommentModal2()
         clientDetails.addNote(commentValue2)
         clientDetails.sendNote()
-        cy.get('.border-l.border-l-4.border-l-primary-500.border-t.cursor-pointer.flex.flex-col.gap-2.justify-between.p-4.w-full > .h-8.max-w-prose.text-start.text-xs.truncate.whitespace-pre').should('have.text', commentValue2)
-        cy.get("[class='whitespace-pre text-sm text-blueGray-700']").should('have.text', commentValue2)
+        clientDetails.assertComment(commentValue2)
+        clientDetails.openSecondComment()
         cy.get(':nth-child(3) > .h-8').should('have.text', commentValue1).click()
         cy.get("[class='whitespace-pre text-sm text-blueGray-700']").should('have.text', commentValue1)
         cy.get("[class='z-10 flex gap-4 border-t bg-white p-6'] [type='submit']:nth-of-type(1)").click()
@@ -109,8 +98,27 @@ describe('Login and Create a Client', () => {
         clientDetails.submitMessage(message2)
         cy.wait(2000)
         cy.get('.flex > .text-s').eq(1).should('have.text', message2 )
-        cy.get('.shrink-0 cursor-pointer self-end max-w-[100%]').eq(1).click()
-         
+        //clientDetails.deleteMessage() --> need to solve selector
+
+        /////////////////////////////////////////  Upload and check files
+        let path = 'cypress/e2e/page objects/shile.png'
+        clientDetails.clickDocsTab()
+        clientDetails.openFileModal()
+        clientDetails.selectFile(path)
+        clientDetails.addNote('Test Note')
+        clientDetails.uploadFile()
+        clientDetails.openFileDetail()
+        cy.get("[name='oldName']").invoke('attr', 'value').should('contain', path.slice(25))
+        clientDetails.closeFileModal()
+
+        ///////////////////////////////////////// File Menu 
+        clientDetails.openFileMenu()
+        cy.get('.gap-4 > .relative > .absolute').should('be.visible')
+        clientDetails.openNotes()
+        clientDetails.openAddNoteModal()
+        clientDetails.addNote()
+        clientDetails.uploadFile()
+        clientDetails.closeModal()
 
     });
     
