@@ -12,13 +12,17 @@ class ClientDetails{
     cy.contains('Upload new document').click()
    }
 
-   selectFile(){
-    cy.get('input[type=file]').selectFile('cypress/e2e/page objects/shile.png', {force:true})
+   selectFile(path){
+    cy.get('input[type=file]').selectFile(path, {force:true})
     
    }
    
-   addNote(){
-    cy.get('#comment').type('This is an automated test note.')
+   addNote(comment){
+    cy.get('#comment').type(comment)
+   }
+
+   sendNote(){
+      cy.get("[class='mt-4 flex gap-4'] [type='submit']:nth-of-type(2)").click()
    }
    
    uploadFile(){
@@ -29,9 +33,13 @@ class ClientDetails{
     cy.contains(filename).invoke('removeAttr', 'target').click()
    }
 
-   editFile(){
+   openFileDetail(){
     cy.get('svg[role=button]').eq(0).click()
-    cy.get('#fileName').type('New Name')
+    
+   }
+
+   editFile(newname){
+    cy.get('#fileName').type(newname)
     cy.contains('Save').click()
    }
 
@@ -55,15 +63,23 @@ class ClientDetails{
     cy.contains('Add a comment').click()
    }
 
+   openCommentModal2(){
+      cy.contains('Add Comment').click()
+     }
+
    openComments(){
     cy.get("[class='flex w-1\/3 flex-col items-start gap-4'] [class] [type='submit']:nth-of-type(2)").click()
    }
 
-   submitMessage(){
-    cy.get('#messageInput').type('This is a test chat message {enter}')
+   submitMessage(message){
+    cy.get('#messageInput').type(message +'{enter}')
     
    }
-  
+   
+   deleteMessage(){
+      cy.get('').click()
+   }
+
    openYearDropdown(){
       cy.contains('Tax year').next().click()
    }
@@ -75,6 +91,23 @@ class ClientDetails{
    } 
    clickCreateReceipt(){
       cy.contains('Create Receipt').click()
+   }
+
+   assertComment(comment){
+      cy.get('.border-l.border-l-4.border-l-primary-500.border-t.cursor-pointer.flex.flex-col.gap-2.justify-between.p-4.w-full > .h-8.max-w-prose.text-start.text-xs.truncate.whitespace-pre').should('have.text', comment)
+      cy.get("[class='whitespace-pre text-sm text-blueGray-700']").should('have.text', comment)
+   }
+
+   openSecondComment(){
+      cy.get(':nth-child(3) > .h-8').as('secondComment').click()
+   }
+
+   assertCommentSwitch(){
+      secondComment.should('have.text', commentValue1) //--> TBD 
+   }
+
+   closeFileModal(){
+      cy.get("[class='mt-10 flex gap-4'] [type='submit']:nth-of-type(1)").click()
    }
 }
 export default ClientDetails

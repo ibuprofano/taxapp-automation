@@ -13,7 +13,7 @@ class CreateClientForm{
     }
 
     addSsn(number){
-        let ssnValue = Math.random() * 1000000000
+        let ssnValue = Math.floor(100000000 + Math.random() * 900000000)
         cy.get('#ssn').type(ssnValue)
         //cy.log(ssnValue)
         return ssnValue
@@ -61,7 +61,10 @@ class CreateClientForm{
         return phoneValue
     }
     selectTaxPrepper(){
-        cy.contains('Choose a tax preparer').click({force:true}).type('{downArrow}{downArrow}{enter}') 
+        cy.contains('Choose a tax preparer').click({force:true}).type('{downArrow}{downArrow}{enter}')
+        let taxPrepperValue = cy.get("[class] div:nth-of-type(12) [class='text-s border-blueGray-200 placeholder\:text-s h-10 rounded-lg border px-3 py-2 font-normal shadow-sm placeholder\:font-normal text-blueGray-700 \!cursor-pointer css-cp01gg-control']")
+        cy.log(taxPrepperValue)
+        //return taxPrepperValue
     }
 
     enterRefReceipt(){
