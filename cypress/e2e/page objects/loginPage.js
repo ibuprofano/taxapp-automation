@@ -13,6 +13,12 @@ class LoginPage{
     clickLoginButton(){
         cy.get('.rounded-lg').click()
     }
+
+    assertLoginData(){
+        cy.get('h2').should('have.text', 'Matias Diego test')
+        cy.get("[class='flex grow items-center gap-2'] .text-xx-s").should('have.text', "matias.diego@rgbrenner.com")
+        cy.get("[class='grow-1 flex'] [type]").should('have.text', "Create new client")
+    }
     
 } 
 

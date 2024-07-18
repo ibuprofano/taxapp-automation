@@ -1,8 +1,27 @@
 /// <reference types="Cypress" />
+
 class ClientDetails{
-   clickEditButtons(){
+   openEditModal(){
     cy.contains('Edit information').click()
-    cy.get('button').contains('Edit client information').click()
+   }
+
+   assertModalInfo(userData){
+      cy.get("[name='email']").invoke('attr', 'value').should('contain', userData.email)
+      cy.get("[name='firstName']").invoke('attr', 'value').should('contain', userData.firstName)
+      cy.get("[name='lastName']").invoke('attr', 'value').should('contain', userData.lastName)
+      cy.get("input[name='dateOfBirth']").invoke('attr', 'value').should('contain', userData.dob)
+      cy.get("[name='zipCode']").invoke('attr', 'value').should('contain', userData.zipCode)
+      cy.get("[name='address1']").invoke('attr', 'value').should('contain', userData.address1)
+      cy.get("[name='address2']").invoke('attr', 'value').should('contain', userData.address2)
+      cy.get("[name='phoneNumber']").invoke('attr', 'value').should('contain', userData.phone)
+      //cy.get("[name='referrersReceiptNumber']").invoke('attr', 'value').should('contain', userData.refReceipt)
+      cy.get("[class] div:nth-of-type(15) .css-w54w9q-singleValue").should('have.text', userData.language.charAt(0).toUpperCase() + userData.language.slice(1))
+      cy.get("[class] div:nth-of-type(12) .css-w54w9q-singleValue").should('have.text', userData.taxPrepper)
+   }
+
+
+   clickEditButton(){
+      cy.get('button').contains('Edit client information').click()
    }
    clickDocsTab(){
     cy.contains('Documentation').click()
@@ -98,6 +117,11 @@ class ClientDetails{
       cy.get("[class='whitespace-pre text-sm text-blueGray-700']").should('have.text', comment)
    }
 
+   assertSecondComment(comment){
+      cy.get(':nth-child(3) > .h-8').should('have.text', comment).click()
+      cy.get("[class='whitespace-pre text-sm text-blueGray-700']").should('have.text', comment)
+   }
+
    openSecondComment(){
       cy.get(':nth-child(3) > .h-8').as('secondComment').click()
    }
@@ -108,6 +132,23 @@ class ClientDetails{
 
    closeFileModal(){
       cy.get("[class='mt-10 flex gap-4'] [type='submit']:nth-of-type(1)").click()
+   }
+
+   assertChatMessages(position, message){
+      cy.get('.flex > .text-s').eq(position).should('have.text', message )
+   }
+
+   assertFileName(path, chars){
+      cy.get("[name='oldName']").invoke('attr', 'value').should('contain', path.slice(chars))
+   }
+
+   assertFileName(path){
+      var nodePath = require('path')
+      cy.get("[name='oldName']").invoke('attr', 'value').should('contain', nodePath.basename(path))
+   }
+
+   assertFileMenu(){
+      cy.get('.gap-4 > .relative > .absolute').should('be.visible')
    }
 }
 export default ClientDetails
