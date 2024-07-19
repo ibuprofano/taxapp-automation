@@ -7,11 +7,14 @@ import ClientDetails from "./page objects/clientDetails";
 
 
 describe('Main Flows E2E Test', () => {
-   const loginPage = new LoginPage
+   
+    const loginPage = new LoginPage
    const homePage = new HomePage
    const createClientForm = new CreateClientForm
    const clientDetails = new ClientDetails
    var userData = {}
+   var newUserData = {}
+
     it('Create basic entities and check the data', () => {
 
         ///////////////////////////////////////// Log in and check user data
@@ -24,35 +27,7 @@ describe('Main Flows E2E Test', () => {
 
         ///////////////////////////////////////// Create client and save data in fixture
         homePage.clickNewClient()
-        let ssn = createClientForm.addSsn()
-        createClientForm.clickNext()
-        let firstName = createClientForm.enterFirstName()
-        let lastName = createClientForm.enterLastName()
-        let dob = createClientForm.enterDob()
-        let zipCode= createClientForm.enterZipCode()
-        let address1 = createClientForm.enterAddress1()
-        let address2 = createClientForm.enterAddress2()
-        let phone = createClientForm.enterPhone()
-        let taxPrepper = createClientForm.selectTaxPrepper()
-        let refReceipt = createClientForm.enterRefReceipt()
-        let email = createClientForm.enterEmail(lastName)
-        let language = createClientForm.selectLanguage('english')
-        createClientForm.clickCreate()
-        createClientForm.clickConfirm()
-        userData = {
-            firstName : firstName,
-            lastName : lastName,
-            dob : dob,
-            zipCode : zipCode,
-            address1: address1,
-            address2: address2,
-            phone: phone,
-            refReceipt : refReceipt,
-            email: email,
-            language : language,
-            SSN: ssn,
-            taxPrepper : 'Matias Diego test'
-        }
+        userData = createClientForm.enterClientData('create')
         cy.writeFile('./cypress/fixtures/created-user-data.json', userData)
         cy.wait(4000) 
 
@@ -62,10 +37,10 @@ describe('Main Flows E2E Test', () => {
         homePage.enterSearchTerm(userData.email)
         cy.wait(4000)
         homePage.selectClient()
-        homePage.assertNewClientData(userData)
+        clientDetails.assertNewClientData(userData)
        
         ///////////////////////////////////////// Add and check comments 
-        let commentValue1 = 'This is an automated comment test.' //This can be edited, will try to randomize in the 
+        let commentValue1 = 'This is an automated comment test.' 
         let commentValue2 = 'This is ANOTHER an automated comment test.'
         clientDetails.openCommentModal()
         clientDetails.addNote(commentValue1)
@@ -95,8 +70,8 @@ describe('Main Flows E2E Test', () => {
         /////////////////////////////////////////  Upload and check files
         let note = 'This is a test note'
         let path = 'cypress/e2e/page objects/shile.png'
-        clientDetails.clickDocsTab()
-        cy.wait(4000)
+     clientDetails.clickDocsTab()
+        cy.wait(4000)   
         clientDetails.openFileModal()
         clientDetails.selectFile(path)
         clientDetails.addNote(note)
@@ -119,22 +94,42 @@ describe('Main Flows E2E Test', () => {
     });
 
     it('Edit entities data', () => {
+
+        ///////////////////////////////////////// Login
         loginPage.accessLoginUrl()
         loginPage.enterEmail()
         loginPage.enterPassword()
         loginPage.clickLoginButton()
         cy.wait(4000)
 
+        ///////////////////////////////////////// Filter and check last created client
         homePage.goToAllClientsUrl()
         homePage.selectFilterType('email')
         homePage.enterSearchTerm(userData.email)
         cy.wait(4000)
         homePage.selectClient()
-        homePage.assertNewClientData(userData)
+        cy.log(userData)
+        clientDetails.assertNewClientData(userData)
 
+        ///////////////////////////////////////// Edit client and check data
         clientDetails.openEditModal()
         clientDetails.assertModalInfo(userData)
         clientDetails.clickEditButton()
+        newUserData = createClientForm.enterClientData('edit', userData)
+        cy.log(newUserData)
+        clientDetails.assertNewClientData(newUserData)
+        cy.writeFile('./cypress/fixtures/created-user-data.json', newUserData)
+        cy.wait(4000)
+
+        ///////////////////////////////////////// Edit file and check data
+        clientDetails.clickDocsTab()
+        cy.wait(4000)
+        clientDetails.openFileDetail()
+        let newName = clientDetails.editFile('New Name')
+        clientDetails.openFileDetail()
+        clientDetails.assertFileName(newName)
+        clientDetails.closeFileModal()
+        
 
 
     });

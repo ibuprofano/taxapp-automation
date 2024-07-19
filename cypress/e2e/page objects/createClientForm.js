@@ -15,24 +15,23 @@ class CreateClientForm{
     addSsn(number){
         let ssnValue = Math.floor(100000000 + Math.random() * 900000000)
         cy.get('#ssn').type(ssnValue)
-        //cy.log(ssnValue)
         return ssnValue
     }
     
 
     clickNext(){
-        cy.contains('Next').click()
+        cy.get("[type='button']").click()
     }
 
 
     enterFirstName(){
         let firstNamevalue = 'Gonza'
-        cy.get('#firstName').type(firstNamevalue)
+        cy.get('#firstName').clear().type(firstNamevalue)
         return firstNamevalue
     }
     enterLastName(){
         var lastNameValue = Math.random()*(999-100+1)+100
-        cy.get('#lastName').type(lastNameValue)
+        cy.get('#lastName').clear().type(lastNameValue)
         return lastNameValue
     }
     enterDob(){
@@ -42,22 +41,22 @@ class CreateClientForm{
     }
     enterZipCode(){
         let zipCodeValue = Math.floor(Math.random()*90000) + 10000
-        cy.get('#zipCode').click({force:true}).type(zipCodeValue)
+        cy.get('#zipCode').click({force:true}).clear().type(zipCodeValue)
         return zipCodeValue
     }
     enterAddress1(){
         let address1Value = "Street Name "+ Math.floor(Math.random()*90000) + 10000
-        cy.get('#address1').type(address1Value)
+        cy.get('#address1').clear().type(address1Value)
         return address1Value
     }
     enterAddress2(){
         let address2Value = "Street Name "+ Math.floor(Math.random()*90000) + 10000
-        cy.get('#address2').type(address2Value)
+        cy.get('#address2').clear().type(address2Value)
         return address2Value
     }
     enterPhone(){
         let phoneValue = Math.floor(Math.random() * 1000000000)
-        cy.get('#phoneNumber').type(phoneValue)
+        cy.get('#phoneNumber').clear().type(phoneValue)
         return phoneValue
     }
     selectTaxPrepper(){
@@ -69,12 +68,12 @@ class CreateClientForm{
 
     enterRefReceipt(){
         let refReceipValue = Math.floor(Math.random() * 1000)
-        cy.get('#referrersReceiptNumber').type('refReceipValue')
+        cy.get('#referrersReceiptNumber').clear().type('refReceipValue')
         return refReceipValue
     }
     enterEmail(lastNameValue){
         let emailValue = 'gonzalo.roland+'+ lastNameValue +'@rootstrap.com'
-        cy.get('#email').type(emailValue)
+        cy.get('#email').clear().type(emailValue)
         return emailValue
     }
 
@@ -87,7 +86,8 @@ class CreateClientForm{
             case 'spanish':
                 sequence = '{downArrow}{downArrow}{enter}'
                 }
-        cy.contains('Choose a language').click({force:true}).type(sequence)
+
+        cy.get(':nth-child(15) > .relative > .css-b62m3t-container > .text-s').scrollIntoView({force:true}).click({force:true}).type(sequence)
         return langValue
         
     }
@@ -100,26 +100,55 @@ class CreateClientForm{
         cy.get('.gap-4 > .bg-primary-500').click()
     }
 
-    saveUserData(ssnValue, firstNameValue, lastNameValue, dobValue, zipCodeValue, address1Value, address2Value, phoneValue, refReceiptValue, emailValue, langValue) {
-        let userData = {
-            firstName : firstNameValue,
-            lastName : lastNameValue,
-            dob : dobValue,
-            zipCode : zipCodeValue,
-            address1: address1Value,
-            address2: address2Value,
-            phone: phoneValue,
-            refReceipt : refReceiptValue,
-            email: emailValue,
-            language : langValue,
-            SSN: ssnValue
+    enterClientData(mode, previousUserData){
 
+    let ssn = ''
+    let taxPrepper = ''
+        switch(mode){
+            case 'create':
+                ssn = this.addSsn()
+                this.clickNext()
+                taxPrepper =  this.selectTaxPrepper()
+                break
+
+            case 'edit':
+                ssn = previousUserData.SSN
+                taxPrepper = previousUserData.taxPrepper
+                break
         }
-        cy.log(userData)
-        cy.writeFile('/fixtures/created-user-data.json', userData)
-        //fs.writeFile('/fixtures/createdUsers', userDatajson )
-        //cy.log(userDatajson)
+        
+        
+        let firstName = this.enterFirstName()
+        let lastName = this.enterLastName()
+        let dob = this.enterDob()
+        let zipCode= this.enterZipCode()
+        let address1 = this.enterAddress1()
+        let address2 = this.enterAddress2()
+        let phone = this.enterPhone()
+        let refReceipt = this.enterRefReceipt()
+        let email = this.enterEmail(lastName)
+        let language = this.selectLanguage('english', 'Choose a language')
+        this.clickCreate()
+        this.clickConfirm()
+
+        let userData = {
+            firstName : firstName,
+            lastName : lastName,
+            dob : dob,
+            zipCode : zipCode,
+            address1: address1,
+            address2: address2,
+            phone: phone,
+            refReceipt : refReceipt,
+            email: email,
+            language : language,
+            SSN: ssn,
+            taxPrepper : 'Matias Diego test'
+        }
+        return userData
     }
+
+    
 
 } 
 
