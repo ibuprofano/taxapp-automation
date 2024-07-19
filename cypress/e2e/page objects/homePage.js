@@ -51,20 +51,7 @@ class HomePage{
         cy.visit('https://stg.taxrms.rgbrenner.com/all-clients')
     }
 
-    assertNewClientData(userData){
-        cy.get('.flex.flex-col.gap-2.items-start > .font-medium.text-lg').should('have.text', userData.firstName +' '+ userData.lastName)
-        cy.log(userData.SSN)
-        cy.get('.flex.flex-col.gap-2.items-start > div:nth-of-type(3)').should('have.text', 'SSN '+ userData.SSN.toString().slice(0, 3) + '-' + userData.SSN.toString().slice(3, 5) + '-' + userData.SSN.toString().slice(5))
-        cy.get('.flex.flex-col.gap-2.items-start > div:nth-of-type(4)').should('have.text', userData.email)
-        //cy.get('div:nth-of-type(1) > .text-blue-gray-sm').should('have.text','Garolfaa, Alaska, US')
-        cy.get('div:nth-of-type(2) > .text-blue-gray-sm').should('have.text', userData.address1)
-        cy.get('div:nth-of-type(4) > .text-blue-gray-sm').should('have.text', userData.zipCode)
-        cy.get('div:nth-of-type(3) > .text-blue-gray-sm').should('have.text', userData.address2)
-        cy.get('div:nth-of-type(5) > .text-blue-gray-sm').should('have.text', userData.dob)
-        cy.get('div:nth-of-type(6) > .text-blue-gray-sm').should('have.text', userData.phone)
-        cy.get('div:nth-of-type(7) > .text-blue-gray-sm').should('have.text', userData.taxPrepper)
-        cy.get('div:nth-of-type(8) > .text-blue-gray-sm').should('have.text', userData.language.charAt(0).toUpperCase() + userData.language.slice(1))
-    }
+    
 } 
 
 export default HomePage

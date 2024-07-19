@@ -6,12 +6,16 @@ import ClientDetails from "./page objects/clientDetails";
 
 
 
-describe('Login and Create a Client', () => {
-   const loginPage = new LoginPage
+describe('Main Flows E2E Test', () => {
+   
+    const loginPage = new LoginPage
    const homePage = new HomePage
    const createClientForm = new CreateClientForm
    const clientDetails = new ClientDetails
-    it('Login', () => {
+   var userData = {}
+   var newUserData = {}
+
+    it('Create basic entities and check the data', () => {
 
         ///////////////////////////////////////// Log in and check user data
         loginPage.accessLoginUrl()
@@ -19,44 +23,11 @@ describe('Login and Create a Client', () => {
         loginPage.enterPassword()
         loginPage.clickLoginButton()
         cy.wait(4000) 
-        cy.get('h2').should('have.text', 'Matias Diego test')
-        cy.get("[class='flex grow items-center gap-2'] .text-xx-s").should('have.text', "matias.diego@rgbrenner.com")
-        cy.get("[class='grow-1 flex'] [type]").should('have.text', "Create new client")
+        loginPage.assertLoginData()
 
         ///////////////////////////////////////// Create client and save data in fixture
         homePage.clickNewClient()
-        let ssn = createClientForm.addSsn()
-        cy.log(ssn)    
-        createClientForm.clickNext()
-        let firstName = createClientForm.enterFirstName()
-        cy.log(firstName)
-        let lastName = createClientForm.enterLastName()
-        let dob = createClientForm.enterDob()
-        let zipCode= createClientForm.enterZipCode()
-        let address1 = createClientForm.enterAddress1()
-        let address2 = createClientForm.enterAddress2()
-        let phone = createClientForm.enterPhone()
-        let taxPrepper = createClientForm.selectTaxPrepper()
-        let refReceipt = createClientForm.enterRefReceipt()
-        let email = createClientForm.enterEmail(lastName)
-        let language = createClientForm.selectLanguage('english')
-        createClientForm.clickCreate()
-        createClientForm.clickConfirm()
-        let userData = {
-            firstName : firstName,
-            lastName : lastName,
-            dob : dob,
-            zipCode : zipCode,
-            address1: address1,
-            address2: address2,
-            phone: phone,
-            refReceipt : refReceipt,
-            email: email,
-            language : language,
-            SSN: ssn,
-            taxPrepper : 'Matias Diego test'
-        }
-        cy.log(userData)
+        userData = createClientForm.enterClientData('create')
         cy.writeFile('./cypress/fixtures/created-user-data.json', userData)
         cy.wait(4000) 
 
@@ -66,59 +37,100 @@ describe('Login and Create a Client', () => {
         homePage.enterSearchTerm(userData.email)
         cy.wait(4000)
         homePage.selectClient()
-        homePage.assertNewClientData(userData)
+        clientDetails.assertNewClientData(userData)
        
         ///////////////////////////////////////// Add and check comments 
-        let commentValue1 = 'This is an automated comment test.' //This can be edited, will try to randomize in the 
+        let commentValue1 = 'This is an automated comment test.' 
         let commentValue2 = 'This is ANOTHER an automated comment test.'
         clientDetails.openCommentModal()
-        //var commentValue = 'This is an automated comment test.' //This can be edited, will try to randomize in the future
         clientDetails.addNote(commentValue1)
         clientDetails.sendNote()
-        //clientDetails.openComments()
         cy.wait(4000)
         clientDetails.openComments()
         clientDetails.assertComment(commentValue1)
-        
         clientDetails.openCommentModal2()
         clientDetails.addNote(commentValue2)
         clientDetails.sendNote()
         clientDetails.assertComment(commentValue2)
         clientDetails.openSecondComment()
-        cy.get(':nth-child(3) > .h-8').should('have.text', commentValue1).click()
-        cy.get("[class='whitespace-pre text-sm text-blueGray-700']").should('have.text', commentValue1)
-        cy.get("[class='z-10 flex gap-4 border-t bg-white p-6'] [type='submit']:nth-of-type(1)").click()
+        clientDetails.assertSecondComment(commentValue1)
+        clientDetails.closeModal()
 
         ///////////////////////////////////////// Send and check chat messages
         let message1 = 'Testing the chat'
         let message2 = 'This is another chat'
         clientDetails.submitMessage(message1)
         cy.wait(2000)
-        cy.get('.flex > .text-s').should('have.text', message1 )
+        clientDetails.assertChatMessages(0, message1)
         clientDetails.submitMessage(message2)
         cy.wait(2000)
-        cy.get('.flex > .text-s').eq(1).should('have.text', message2 )
+        clientDetails.assertChatMessages(1, message2)
         //clientDetails.deleteMessage() --> need to solve selector
 
         /////////////////////////////////////////  Upload and check files
+        let note = 'This is a test note'
         let path = 'cypress/e2e/page objects/shile.png'
-        clientDetails.clickDocsTab()
+     clientDetails.clickDocsTab()
+        cy.wait(4000)   
         clientDetails.openFileModal()
         clientDetails.selectFile(path)
-        clientDetails.addNote('Test Note')
+        clientDetails.addNote(note)
         clientDetails.uploadFile()
+        cy.wait(4000)
         clientDetails.openFileDetail()
-        cy.get("[name='oldName']").invoke('attr', 'value').should('contain', path.slice(25))
+        clientDetails.assertFileName(path)
         clientDetails.closeFileModal()
 
-        ///////////////////////////////////////// File Menu 
+        ///////////////////////////////////////// File Menu
+        note = 'This is a SECOND test note' 
         clientDetails.openFileMenu()
-        cy.get('.gap-4 > .relative > .absolute').should('be.visible')
+        clientDetails.assertFileMenu()
         clientDetails.openNotes()
         clientDetails.openAddNoteModal()
-        clientDetails.addNote()
+        clientDetails.addNote(note)
         clientDetails.uploadFile()
+        //clientDetails.assertComment(note)
         clientDetails.closeModal()
+    });
+
+    it('Edit entities data', () => {
+
+        ///////////////////////////////////////// Login
+        loginPage.accessLoginUrl()
+        loginPage.enterEmail()
+        loginPage.enterPassword()
+        loginPage.clickLoginButton()
+        cy.wait(4000)
+
+        ///////////////////////////////////////// Filter and check last created client
+        homePage.goToAllClientsUrl()
+        homePage.selectFilterType('email')
+        homePage.enterSearchTerm(userData.email)
+        cy.wait(4000)
+        homePage.selectClient()
+        cy.log(userData)
+        clientDetails.assertNewClientData(userData)
+
+        ///////////////////////////////////////// Edit client and check data
+        clientDetails.openEditModal()
+        clientDetails.assertModalInfo(userData)
+        clientDetails.clickEditButton()
+        newUserData = createClientForm.enterClientData('edit', userData)
+        cy.log(newUserData)
+        clientDetails.assertNewClientData(newUserData)
+        cy.writeFile('./cypress/fixtures/created-user-data.json', newUserData)
+        cy.wait(4000)
+
+        ///////////////////////////////////////// Edit file and check data
+        clientDetails.clickDocsTab()
+        cy.wait(4000)
+        clientDetails.openFileDetail()
+        let newName = clientDetails.editFile('New Name')
+        clientDetails.openFileDetail()
+        clientDetails.assertFileName(newName)
+        clientDetails.closeFileModal()
+        
+
 
     });
     
