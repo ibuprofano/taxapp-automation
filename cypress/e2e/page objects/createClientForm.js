@@ -68,7 +68,7 @@ class CreateClientForm{
 
     enterRefReceipt(){
         let refReceipValue = Math.floor(Math.random() * 1000)
-        cy.get('#referrersReceiptNumber').clear().type('refReceipValue')
+         cy.get('#referrersReceiptNumber').clear().type('refReceipValue')
         return refReceipValue
     }
     enterEmail(lastNameValue){

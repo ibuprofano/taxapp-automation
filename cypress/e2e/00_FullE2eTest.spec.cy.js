@@ -8,7 +8,7 @@ import ClientDetails from "./page objects/clientDetails";
 
 describe('Main Flows E2E Test', () => {
    
-    const loginPage = new LoginPage
+   const loginPage = new LoginPage
    const homePage = new HomePage
    const createClientForm = new CreateClientForm
    const clientDetails = new ClientDetails
@@ -70,7 +70,7 @@ describe('Main Flows E2E Test', () => {
         /////////////////////////////////////////  Upload and check files
         let note = 'This is a test note'
         let path = 'cypress/e2e/page objects/shile.png'
-     clientDetails.clickDocsTab()
+        clientDetails.clickDocsTab()
         cy.wait(4000)   
         clientDetails.openFileModal()
         clientDetails.selectFile(path)
