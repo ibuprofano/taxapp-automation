@@ -1,8 +1,13 @@
-//const { defineConfig } = require("cypress");
+const { defineConfig } = require("Cypress");
 
 module.exports = defineConfig({
+
   e2e: {
+
     setupNodeEvents(on, config) {
+      
+     
+
       const environment = config.env.environment || "staging"
       const urls = {
         qa: "https://qa.taxrms.rgbrenner.com/auth",
@@ -28,12 +33,17 @@ module.exports = defineConfig({
         userFullName: userName[environment]
 
         }
+        
       return config
+    },
+    reporter: 'cypress-multi-reporters',
+    reporterOptions: {
+      configFile: 'reporter-config.json'
     },
 
     //env : {
 
     //}
     //baseUrl: "https://stg.taxrms.rgbrenner.com/auth"
-  },
+  }
 });

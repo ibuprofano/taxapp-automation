@@ -1,0 +1,145 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 3,
+    "pending": 0,
+    "failures": 0,
+    "start": "2024-07-24T18:52:15.502Z",
+    "end": "2024-07-24T18:53:27.541Z",
+    "duration": 72039,
+    "testsRegistered": 3,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "aada9079-4bfd-4842-b38b-3924858318b7",
+      "title": "",
+      "fullFile": "cypress\\e2e\\06_FileUpload.cy.js",
+      "file": "cypress\\e2e\\06_FileUpload.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "9cd785d4-af0b-4e27-96e9-9b194e526678",
+          "title": "File Upload",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Upload File and Check",
+              "fullTitle": "File Upload Upload File and Check",
+              "timedOut": null,
+              "duration": 28220,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "clientDetails.openFileModal();\nclientDetails.selectFile(path);\nclientDetails.addNote(note);\nclientDetails.uploadFile();\ncy.wait(4000);\nclientDetails.openFileDetail();\nclientDetails.assertFileName(path);\nclientDetails.closeFileModal();",
+              "err": {},
+              "uuid": "da17717f-6faf-47ea-96b8-6e805c7b08d3",
+              "parentUUID": "9cd785d4-af0b-4e27-96e9-9b194e526678",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Check File again",
+              "fullTitle": "File Upload Check File again",
+              "timedOut": null,
+              "duration": 21183,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "clientDetails.openFileDetail();\nclientDetails.assertFileName(path);",
+              "err": {},
+              "uuid": "34afc809-f76b-4e16-9ef9-49b744c13e5a",
+              "parentUUID": "9cd785d4-af0b-4e27-96e9-9b194e526678",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Check File Menu and add another note",
+              "fullTitle": "File Upload Check File Menu and add another note",
+              "timedOut": null,
+              "duration": 22387,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "note = 'This is a SECOND test note';\nclientDetails.openFileMenu();\nclientDetails.assertFileMenu();\nclientDetails.openNotes();\nclientDetails.openAddNoteModal();\nclientDetails.addNote(note);\nclientDetails.uploadFile();",
+              "err": {},
+              "uuid": "3f9b1794-32be-40e3-b2a5-d6bb7aa9ca4b",
+              "parentUUID": "9cd785d4-af0b-4e27-96e9-9b194e526678",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "da17717f-6faf-47ea-96b8-6e805c7b08d3",
+            "34afc809-f76b-4e16-9ef9-49b744c13e5a",
+            "3f9b1794-32be-40e3-b2a5-d6bb7aa9ca4b"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 71790,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "reportDir": "cypress/results/mochawesome",
+        "quite": true,
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

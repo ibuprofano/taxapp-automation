@@ -14,6 +14,15 @@ class LoginPage{
         cy.get('.rounded-lg').click()
     }
 
+    login(){
+        
+        this.accessLoginUrl()
+        this.enterEmail()
+        this.enterPassword()
+        this.clickLoginButton()
+        cy.wait(4000)
+    }
+
     assertLoginData(){
         cy.get('h2').should('have.text', Cypress.env('userFullName'))
         cy.get("[class='flex grow items-center gap-2'] .text-xx-s").should('have.text', Cypress.env('userName'))
