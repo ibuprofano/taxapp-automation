@@ -29,10 +29,10 @@ class CreateClientForm{
         cy.get('#firstName').clear().type(firstNamevalue)
         return firstNamevalue
     }
-    enterLastName(){
-        var lastNameValue = Math.random()*(999-100+1)+100
-        cy.get('#lastName').clear().type(lastNameValue)
-        return lastNameValue
+    enterLastName(ssn){
+        //var lastNameValue = Math.floor(Math.random()*90000) + 10000
+        cy.get('#lastName').clear().type(ssn)
+        return ssn
     }
     enterDob(){
         let dobValue = "01/01/1900"
@@ -119,7 +119,7 @@ class CreateClientForm{
         
         
         let firstName = this.enterFirstName()
-        let lastName = this.enterLastName()
+        let lastName = this.enterLastName(ssn)
         let dob = this.enterDob()
         let zipCode= this.enterZipCode()
         let address1 = this.enterAddress1()
