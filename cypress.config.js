@@ -3,6 +3,8 @@ const { defineConfig } = require("Cypress");
 module.exports = defineConfig({
 
   e2e: {
+    
+    retries: 2,
 
     setupNodeEvents(on, config) {
       
@@ -36,14 +38,11 @@ module.exports = defineConfig({
         
       return config
     },
+    
     reporter: 'cypress-multi-reporters',
     reporterOptions: {
       configFile: 'reporter-config.json'
     },
-
-    //env : {
-
-    //}
-    //baseUrl: "https://stg.taxrms.rgbrenner.com/auth"
-  }
+    
+   }
 });

@@ -5,9 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "E2Eprod": "",
-    "E2Estg": "",
-    "E2Eqa": ""
+    "runAllTests-qa": "npx cypress run -- --env environment='qa' --reporter mochawesome",
+    "runAllTests-staging": "npx cypress run -- --env environment='staging' --reporter mochawesome",
+    "runAllTests-prod": "npx cypress run -- --env environment='prod' --reporter mochawesome",
+    "merge-reports": "npx mochawesome-merge cypress/results/mochawesome/*.json > finalReport.json && npx marge finalReport.json",
+    "delete-results": "rm -rf cypress/results/* || true",
+    "delete-final-result": "rm -rf finalReport.json || true",
+    "delete-mochawesome-report": "rm -rf mochawesome-report/* || true",
+    "delete-all-results": "npm run delete-results && npm run delete-final-result && npm run delete-mochawesome-report",
+    "cypress-suite-qa": "npm run delete-results && npm run delete-final-result && npm run delete-mochawesome-report && npm run runAllTests-qa && npx mochawesome-merge cypress/results/mochawesome/*.json > finalReport.json && npx marge finalReport.json && npx open-cli mochawesome-report/finalReport.html",
+    "cypress-suite-staging": "npm run delete-results && npm run delete-final-result && npm run delete-mochawesome-report && npm run runAllTests-staging && npx mochawesome-merge cypress/results/mochawesome/*.json > finalReport.json && npx marge finalReport.json && npx open-cli mochawesome-report/finalReport.html",
+    "cypress-suite-prod": "npm run delete-results && npm run delete-final-result && npm run delete-mochawesome-report && npm run runAllTests-prod && npx mochawesome-merge cypress/results/mochawesome/*.json > finalReport.json && npx marge finalReport.json && npx open-cli mochawesome-report/finalReport.html"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +29,7 @@
     "mocha-junit-reporter": "^2.2.1",
     "mochawesome": "^7.1.3",
     "mochawesome-merge": "^4.3.0",
-    "mochawesome-report-generator": "^6.2.0"
+    "mochawesome-report-generator": "^6.2.0",
+    "open-cli": "^8.0.0"
   }
 }
