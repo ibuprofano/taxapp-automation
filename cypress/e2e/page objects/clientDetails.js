@@ -161,7 +161,15 @@ class ClientDetails{
 
    assertFileName(fullName){
       var nodePath = require('path')
-      cy.get("[name='oldName']").invoke('attr', 'value').should('contain', nodePath.basename(fullName))
+      let shortName = nodePath.basename(fullName)
+      cy.get("[name='oldName']").invoke('attr', 'value').should('contain', shortName)
+
+   }
+
+   assertFileNameInList(string){
+      let selector = cy.get('[target]')
+      let ext = selector.invoke('text').substring(string.indexOf(".") + 1)
+      selector.should('have.text', string + "." + ext)
    }
 
    assertFileMenu(){

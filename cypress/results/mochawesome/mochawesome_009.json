@@ -1,0 +1,107 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2024-07-24T18:54:54.748Z",
+    "end": "2024-07-24T18:55:12.702Z",
+    "duration": 17954,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "a0a47f0d-75ad-4245-9068-860ac9398fd5",
+      "title": "",
+      "fullFile": "cypress\\e2e\\CreateReceipt.cy.js",
+      "file": "cypress\\e2e\\CreateReceipt.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "bd70b197-57cf-4a1e-971b-a5382d6ace2d",
+          "title": "Add Comment",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "View Comment",
+              "fullTitle": "Add Comment View Comment",
+              "timedOut": null,
+              "duration": 17878,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "loginPage.accessLoginUrl();\nloginPage.enterEmail();\nloginPage.enterPassword();\nloginPage.clickLoginButton();\ncy.wait(4000);\nhomePage.goToAllClientsUrl();\n//homePage.selectAllClients() //Add to all other tests\nhomePage.selectFilterType('email');\nhomePage.enterSearchTerm('gonzalo.roland+666');\ncy.wait(4000);\nhomePage.selectClient();\ncy.wait(4000);\nclientDetails.clickReceiptsTab();\nclientDetails.clickCreateReceipt();\n//createReceipt.openReceiptTypeModal()\ncreateReceipt.selectReceiptType('copyReceipt');\ncreateReceipt.clickNext();",
+              "err": {},
+              "uuid": "02aac612-8dfc-4121-80bb-694e5b47229e",
+              "parentUUID": "bd70b197-57cf-4a1e-971b-a5382d6ace2d",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "02aac612-8dfc-4121-80bb-694e5b47229e"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 17878,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "reportDir": "cypress/results/mochawesome",
+        "quite": true,
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

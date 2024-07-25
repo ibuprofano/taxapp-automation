@@ -1,0 +1,107 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2024-07-24T18:49:49.269Z",
+    "end": "2024-07-24T18:50:30.131Z",
+    "duration": 40862,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "bf0a79b3-f5d3-43ac-a0bc-9bcd4df771fd",
+      "title": "",
+      "fullFile": "cypress\\e2e\\03_FilterUser.cy.js",
+      "file": "cypress\\e2e\\03_FilterUser.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "8d5d06c7-e40c-4ce5-8890-2de935f07c32",
+          "title": "Filter User",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Filter by all values",
+              "fullTitle": "Filter User Filter by all values",
+              "timedOut": null,
+              "duration": 40753,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "homePage.goToAllClientsUrl();\nhomePage.selectFilterType('all');\nhomePage.enterSearchTerm(data.email);\ncy.wait(2000);\nhomePage.assertSearchResults(data);\ncy.reload();\nhomePage.enterSearchTerm(data.lastName);\ncy.wait(2000);\nhomePage.assertSearchResults(data);\ncy.reload();\nhomePage.enterSearchTerm(data.phone);\ncy.wait(2000);\nhomePage.assertSearchResults(data);\ncy.reload();\nhomePage.enterSearchTerm(data.SSN);\ncy.wait(2000);\nhomePage.assertSearchResults(data);\ncy.reload();\nhomePage.selectFilterType('email');\nhomePage.enterSearchTerm(data.email);\ncy.wait(2000);\nhomePage.assertSearchResults(data);\ncy.reload();\nhomePage.selectFilterType('lastName');\nhomePage.enterSearchTerm(data.lastName);\ncy.wait(2000);\nhomePage.assertSearchResults(data);\ncy.reload();\nhomePage.selectFilterType('mobilePhone');\nhomePage.enterSearchTerm(data.phone);\ncy.wait(2000);\nhomePage.assertSearchResults(data);\ncy.reload();\nhomePage.selectFilterType('ssn');\nhomePage.enterSearchTerm(data.SSN);\ncy.wait(2000);\nhomePage.assertSearchResults(data);\n//homePage.selectFilterType('ein')\n//homePage.enterSearchTerm(data.email)\n//cy.wait(4000)",
+              "err": {},
+              "uuid": "c785fbc9-a1ff-45a6-8085-24f5a6a8c225",
+              "parentUUID": "8d5d06c7-e40c-4ce5-8890-2de935f07c32",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "c785fbc9-a1ff-45a6-8085-24f5a6a8c225"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 40753,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "reportDir": "cypress/results/mochawesome",
+        "quite": true,
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

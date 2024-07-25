@@ -36,7 +36,7 @@ class HomePage{
     }
 
     enterSearchTerm(term){
-        cy.get('#searchInput').type(term)
+        cy.get('#searchInput').clear().type(term)
     }
 
     selectClient(){
@@ -51,7 +51,21 @@ class HomePage{
         cy.visit('https://stg.taxrms.rgbrenner.com/all-clients')
     }
 
-    
+    accessClientDetails(data){
+        this.goToAllClientsUrl()
+        this.selectFilterType('email')
+        this.enterSearchTerm(data.email)
+        cy.wait(4000)
+        this.selectClient()
+        cy.wait(4000)
+        
+    }
+
+    assertSearchResults(data){
+        cy.get(':nth-child(3) > .table--td--p').should('have.text', data.firstName)
+        cy.get(':nth-child(2) > .table--td--p').should('have.text', data.lastName)
+
+    }
 } 
 
 export default HomePage
